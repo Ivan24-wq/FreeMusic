@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Player.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20">
+            
+            <Label Text="Free Music"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0, 20, 0, 10"/>
+
+            <!-- Поле Email -->
+            <Frame BackgroundColor="#F8F9FA" CornerRadius="10" HasShadow="False" Margin="0,15,0,0">
+                <HorizontalStackLayout Spacing="15">
+                    <Label Text="📧" FontSize="20" VerticalOptions="Center"/>
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Email" FontSize="12" TextColor="Gray"/>
+                        <Entry x:Name="EmailEntry" 
+                               Placeholder="Введите email" 
+                               Keyboard="Email"
+                               ClearButtonVisibility="WhileEditing"
+                               TextColor="Black"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Поле Пароль -->
+            <Frame BackgroundColor="#F8F9FA" CornerRadius="10" HasShadow="False" Margin="0,10,0,0">
+                <HorizontalStackLayout Spacing="15">
+                    <Label Text="🔒" FontSize="20" VerticalOptions="Center"/>
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Пароль" FontSize="12" TextColor="Gray"/>
+                        <Entry x:Name="PasswordEntry" 
+                               Placeholder="Введите пароль" 
+                               IsPassword="True"
+                               ClearButtonVisibility="WhileEditing"
+                               TextColor="Black"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Кнопка Войти -->
+            <Button Text="Войти"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    CornerRadius="25"
+                    FontSize="16"
+                    WidthRequest="160"
+                    HeightRequest="40"
+                    HorizontalOptions="Center"
+                    Margin="0,25,0,0"/>
+
+            <!-- Разделитель -->
+            <Grid Margin="0,20,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <BoxView Grid.Column="0"
+                         HeightRequest="1"
+                         BackgroundColor="Gray"
+                         VerticalOptions="Center"/>
+
+                <Label Grid.Column="1"
+                       Text="ИЛИ"
+                       TextColor="Gray"
+                       FontAttributes="Italic"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Margin="10,0"/>
+
+                <BoxView Grid.Column="2"
+                         HeightRequest="1"
+                         BackgroundColor="Gray"
+                         VerticalOptions="Center"/>
+            </Grid>
+
+            <!-- Кнопка Зарегистрироваться -->
+            <Button Text="Зарегистрироваться"
+                    BackgroundColor="Black"
+                    TextColor="White"
+                    CornerRadius="25"
+                    FontSize="16"
+                    WidthRequest="200"
+                    HeightRequest="40"
+                    HorizontalOptions="Center"
+                    Margin="0,0,0,30"
+                    Clicked ="Register"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
