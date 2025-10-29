@@ -64,7 +64,9 @@
                 Margin="0, 20"
                 CornerRadius="16"
                 WidthRequest="350"
-                HorizontalOptions="Center"/>
+                HorizontalOptions="Center"
+                Clicked="RegisterClicked"/>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
