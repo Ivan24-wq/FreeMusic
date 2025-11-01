@@ -1,5 +1,6 @@
 using Player.Models;
 using Player.Services;
+using Player.Helper;
 
 namespace Player;
 
@@ -39,7 +40,11 @@ public partial class SecondPage : ContentPage
             return;
         }
 
-        var newUser = new User(email, password, email);
+        // Хэшируем пароль
+        string salt = PasswordHelper.GenaretionSalt();
+        string hash = PasswordHelper.PasswordHashed(password, salt);
+
+        var newUser = new User(email, hash, salt);
         await _mongoService.AddUserAsync(newUser);
 
         await DisplayAlert("Успех", "Вы успешно зарегистрировались!", "OK");
