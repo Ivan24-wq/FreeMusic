@@ -1,4 +1,5 @@
-﻿using Player.Models;
+﻿using Player.Helper;
+using Player.Models;
 using Player.Services;
 namespace Player;
 
@@ -32,15 +33,19 @@ public partial class MainPage : ContentPage
 			return;
 		}
 
-		if (user.Password != password)
-		{
-			await DisplayAlert("Ошибка!", "Неверный парль!", "OK");
+		//Проверка захэшированного пароля
+		bool IsValid = PasswordHelper.Verification(password, user.Password, user.Salt);
+        if (!IsValid)
+        {
+			await DisplayAlert("Ошибка!", "Неверный пароль!", "ОК");
 			return;
-		}
+        }
 
 		await DisplayAlert("Успех", $"Добро пожаловать, {user.Login}!", "OK");
-	}
 
+		//Кэшируем логин
+		Preferences.Set("loggedUser", user.Email);
+	}
 
 
 	private async void Register(object sender, EventArgs e)
