@@ -47,19 +47,18 @@ public partial class SecondPage : ContentPage
 
         var newUser = new User(email, hash, salt);
         await _mongoService.AddUserAsync(newUser);
+        bool sent = await SendVeryfincationCode(email);
+        if (!sent)
+        {
+            await DisplayAlert("Ошибка", "Не удалось отправить код подтверждения", "OK");
+        }
 
         await DisplayAlert("Успех", "Вы успешно зарегистрировались!", "OK");
+        await Navigation.PushAsync(new VerificationPage());
 
         EmailEntry.Text = "";
         PasswordEntry.Text = "";
         ConfirmPassword.Text = "";
-
-        bool sent = await SendVeryfincationCode(email);
-        if (sent)
-        {
-            await Navigation.PushAsync(new VerificationPage());
-        }
-
     }
 
     //Метод отправки кода подтверждения
