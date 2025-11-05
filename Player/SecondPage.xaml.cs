@@ -1,6 +1,7 @@
 using Player.Models;
 using Player.Services;
 using Player.Helper;
+using DotNetEnv;
 
 namespace Player;
 
@@ -52,5 +53,38 @@ public partial class SecondPage : ContentPage
         EmailEntry.Text = "";
         PasswordEntry.Text = "";
         ConfirmPassword.Text = "";
+
+        bool sent = await SendVeryfincationCode(email);
+        if (sent)
+        {
+            await Navigation.PushAsync(new VerificationPage());
+        }
+
+    }
+
+    //Метод отправки кода подтверждения
+	private async Task<bool> SendVeryfincationCode(string EmailEntry)
+	{
+		Env.Load();
+		string code = GenerationVerificationCode();
+		bool sent = await EmailHelper.SendEmailAsync(
+			smtpHost: "smtp.yandex.ru",
+			smtpPort: 465,
+			fromEmail: "EMAIL",
+			fromPassword: "PASSWORD",
+			toEmail: EmailEntry, subject: " Коод подтверждения",
+			body: $"Ваш код: {code}");
+
+		if (sent)
+		{
+			Preferences.Set("VerificationCode", code);
+		}
+		return sent;
+	}
+	
+	//Генерация кода
+	private string GenerationVerificationCode()
+    {
+		return new Random().Next(100000, 999999).ToString();
     }
 }

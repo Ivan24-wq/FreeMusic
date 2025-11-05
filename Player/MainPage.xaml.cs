@@ -1,4 +1,5 @@
-﻿using Player.Helper;
+﻿using MongoDB.Bson.Serialization.Conventions;
+using Player.Helper;
 using Player.Models;
 using Player.Services;
 namespace Player;
@@ -35,11 +36,11 @@ public partial class MainPage : ContentPage
 
 		//Проверка захэшированного пароля
 		bool IsValid = PasswordHelper.Verification(password, user.Password, user.Salt);
-        if (!IsValid)
-        {
+		if (!IsValid)
+		{
 			await DisplayAlert("Ошибка!", "Неверный пароль!", "ОК");
 			return;
-        }
+		}
 
 		await DisplayAlert("Успех", $"Добро пожаловать, {user.Login}!", "OK");
 
@@ -51,5 +52,5 @@ public partial class MainPage : ContentPage
 	private async void Register(object sender, EventArgs e)
 	{ 
 		await Navigation.PushAsync(new SecondPage("Регистрация"));
-	}
+	}	
 }
