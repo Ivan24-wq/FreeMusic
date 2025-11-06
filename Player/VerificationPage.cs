@@ -27,9 +27,19 @@ public partial class VerificationPage : ContentPage
             //Временные данные пользователя
             string email = Preferences.Get("PendingUserEmail", " ");
             string password = Preferences.Get("PendingUserPassword", "");
-            //Создание пользователя в БД
+
+            //Проверка на не зарегистрированного пользователя
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            {
+                await DisplayAlert("Ошибка!", "Данный пользователь не найден!", "OK");
+                return;
+            }
+            
+
+            //Создание пользователя в БД и хэшируем пароль
             string salt = PasswordHelper.GenaretionSalt();
             string hash = PasswordHelper.PasswordHashed(password, salt);
+
 
             var newUser = new User(email, hash, salt);
             await _mongoService.AddUserAsync(newUser);

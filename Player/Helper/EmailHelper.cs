@@ -31,7 +31,7 @@ public static class EmailHelper
         }
         catch(Exception ex)
         {
-            Console.WriteLine($"Ошибка при отправке кода! {ex.Message}");
+            Console.WriteLine($"Не получилось отправить код! {ex.Message}");
             return false;
         }  
     }

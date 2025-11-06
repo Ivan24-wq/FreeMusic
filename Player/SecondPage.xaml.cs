@@ -41,19 +41,19 @@ public partial class SecondPage : ContentPage
             return;
         }
 
-        // Хэшируем пароль
-        string salt = PasswordHelper.GenaretionSalt();
-        string hash = PasswordHelper.PasswordHashed(password, salt);
-
-        var newUser = new User(email, hash, salt);
-        await _mongoService.AddUserAsync(newUser);
+        //Отпрака кода подтверждени]
         bool sent = await SendVeryfincationCode(email);
         if (!sent)
         {
             await DisplayAlert("Ошибка", "Не удалось отправить код подтверждения", "OK");
+            return;
         }
 
-        await DisplayAlert("Успех", "Вы успешно зарегистрировались!", "OK");
+
+        //Временное храниение
+        Preferences.Set("PendingUserEmail", email);
+        Preferences.Set("PendingUserPassword", password);
+        await DisplayAlert("Письмо с кодом подтверждения отправден на почту", "Введите код", "OK");
         await Navigation.PushAsync(new VerificationPage());
 
         EmailEntry.Text = "";
@@ -65,13 +65,17 @@ public partial class SecondPage : ContentPage
 	private async Task<bool> SendVeryfincationCode(string EmailEntry)
 	{
 		Env.Load();
-		string code = GenerationVerificationCode();
+        string code = GenerationVerificationCode();
+        //Чтение пароля и эмейла из env
+        string fromEmail = Environment.GetEnvironmentVariable("EMAIL");
+        string fromPassword = Environment.GetEnvironmentVariable("PASSWORD");
+
 		bool sent = await EmailHelper.SendEmailAsync(
-			smtpHost: "smtp.yandex.ru",
-			smtpPort: 465,
-			fromEmail: "EMAIL",
-			fromPassword: "PASSWORD",
-			toEmail: EmailEntry, subject: " Коод подтверждения",
+			smtpHost: "smtp.gmail.com",
+			smtpPort: 587,
+			fromEmail: fromEmail,
+			fromPassword: fromPassword,
+			toEmail: EmailEntry, subject: " Код подтверждения",
 			body: $"Ваш код: {code}");
 
 		if (sent)
