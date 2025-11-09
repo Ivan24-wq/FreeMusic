@@ -56,33 +56,54 @@ public partial class SecondPage : ContentPage
         await DisplayAlert("Письмо с кодом подтверждения отправден на почту", "Введите код", "OK");
         await Navigation.PushAsync(new VerificationPage());
 
-        EmailEntry.Text = "";
-        PasswordEntry.Text = "";
-        ConfirmPassword.Text = "";
+        EmailEntry.Text = string.Empty;
+        PasswordEntry.Text = string.Empty;
+        ConfirmPassword.Text = string.Empty;
     }
 
     //Метод отправки кода подтверждения
 	private async Task<bool> SendVeryfincationCode(string EmailEntry)
 	{
-		Env.Load();
-        string code = GenerationVerificationCode();
-        //Чтение пароля и эмейла из env
-        string fromEmail = Environment.GetEnvironmentVariable("EMAIL");
-        string fromPassword = Environment.GetEnvironmentVariable("PASSWORD");
+        try
+        {
+            Env.Load();
+            string code = GenerationVerificationCode();
+            //Чтение пароля и эмейла из env
+            string fromEmail = Environment.GetEnvironmentVariable("EMAIL");
+            string fromPassword = Environment.GetEnvironmentVariable("PASSWORD");
 
-		bool sent = await EmailHelper.SendEmailAsync(
-			smtpHost: "smtp.gmail.com",
-			smtpPort: 587,
-			fromEmail: fromEmail,
-			fromPassword: fromPassword,
-			toEmail: EmailEntry, subject: " Код подтверждения",
-			body: $"Ваш код: {code}");
+            //ОТладка на .env
+            if(string.IsNullOrEmpty(fromEmail) || string.IsNullOrEmpty(fromPassword))
+            {
+                Console.WriteLine("Ошибка: Email или Password не указаны в .env");
+                return false;
+            }
 
-		if (sent)
-		{
+            string subject = "Код подтверждения регистрации";
+            string body = $"<h2>Приветствуем!</h2><p>Ваш код: <b>{code}. Его нужно использовать для подтверждения регистрации! С уважением, разработчик FreeMusic</b></p>";
+
+            bool sent = await EmailHelper.SendEmailAsync(
+                smtpHost: "smtp.gmail.com",
+                smtpPort: 587,
+                fromEmail: fromEmail,
+                fromPassword: fromPassword,
+                toEmail: EmailEntry, subject: subject,
+                body: body);
+                
+            if (sent)
+		    {
 			Preferences.Set("VerificationCode", code);
-		}
-		return sent;
+		    }
+            return sent;
+            
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Ошибка при отправке письма! {ex.Message}");
+            return false;
+        }
+
+		
 	}
 	
 	//Генерация кода

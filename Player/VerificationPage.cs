@@ -40,17 +40,29 @@ public partial class VerificationPage : ContentPage
             string salt = PasswordHelper.GenaretionSalt();
             string hash = PasswordHelper.PasswordHashed(password, salt);
 
+            //новый юзер
+            var newUser = new User(login: email,
+                password: hash,
+                email: email,
+                code: null);
 
-            var newUser = new User(email, hash, salt);
-            await _mongoService.AddUserAsync(newUser);
+            try
+            {
+                await _mongoService.AddUserAsync(newUser);
+                
+                //Очистка временных данных
+                Preferences.Remove("VerificationCode");
+                Preferences.Remove("PendingUserEmail");
+                Preferences.Remove("PendingUserPassword");
 
-            //Очистка временных данных
-            Preferences.Remove("VerificationCode");
-            Preferences.Remove("PendingUserEmail");
-            Preferences.Remove("PendingUserPassword");
 
             await DisplayAlert("Успех!", "Вы успешно зарегистрировались!", "OK");
             await Navigation.PopToRootAsync();
+            }
+            catch(Exception ex)
+            {
+                await DisplayAlert("Ошибка!", $"Не удалось сохранить пользователя: {ex.Message}", "OK");
+            }
         }
         else
         {
