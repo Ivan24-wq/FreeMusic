@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using DotNetEnv;
 
 namespace Player;
 
@@ -6,6 +7,10 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
+
+		var envPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".env");
+		Env.Load(envPath);
+
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()

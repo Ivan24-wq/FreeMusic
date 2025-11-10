@@ -69,8 +69,8 @@ public partial class SecondPage : ContentPage
             Env.Load();
             string code = GenerationVerificationCode();
             //Чтение пароля и эмейла из env
-            string fromEmail = Environment.GetEnvironmentVariable("EMAIL");
-            string fromPassword = Environment.GetEnvironmentVariable("PASSWORD");
+            string fromEmail = Environment.GetEnvironmentVariable("EMAIL")!;
+            string fromPassword = Environment.GetEnvironmentVariable("PASSWORD")!;
 
             //ОТладка на .env
             if(string.IsNullOrEmpty(fromEmail) || string.IsNullOrEmpty(fromPassword))
