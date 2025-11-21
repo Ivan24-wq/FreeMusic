@@ -57,7 +57,7 @@
 
             <!-- Кнопка зарегистрироваться-->
             <Button
-                BackgroundColor="Blue"
+                BackgroundColor="White"
                 Text ="Зарегистрироваться"
                 FontSize="25"
                 TextColor="Black"

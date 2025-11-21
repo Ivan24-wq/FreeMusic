@@ -41,10 +41,12 @@ public partial class VerificationPage : ContentPage
             string hash = PasswordHelper.PasswordHashed(password, salt);
 
             //новый юзер
-            var newUser = new User(login: email,
+            var newUser = new User(
+                login: email,
                 password: hash,
                 email: email,
-                code: null);
+                code: null,
+                salt: salt);
 
             try
             {

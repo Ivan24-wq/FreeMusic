@@ -26,12 +26,13 @@ public class User
     public string Salt { get; private set; } = null;
 
     //Конструктор для создания нового юзера
-    public User(string login, string password, string email, string? code)
+    public User(string login, string password, string email, string? code, string salt)
     {
         Login = login;
         Password = password;
         Email = email;
         Code = code;
+        Salt = salt;
     }
 
     //Для монго

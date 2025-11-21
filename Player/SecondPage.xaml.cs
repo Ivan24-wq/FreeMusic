@@ -61,16 +61,18 @@ public partial class SecondPage : ContentPage
         ConfirmPassword.Text = string.Empty;
     }
 
+    
+
     //Метод отправки кода подтверждения
 	private async Task<bool> SendVeryfincationCode(string EmailEntry)
 	{
         try
         {
-            Env.Load();
+            
             string code = GenerationVerificationCode();
             //Чтение пароля и эмейла из env
-            string fromEmail = Environment.GetEnvironmentVariable("EMAIL")!;
-            string fromPassword = Environment.GetEnvironmentVariable("PASSWORD")!;
+            string fromEmail = "iv8747583@gmail.com";
+            string fromPassword = "qfsu eicq esyp fgwk";
 
             //ОТладка на .env
             if(string.IsNullOrEmpty(fromEmail) || string.IsNullOrEmpty(fromPassword))
