@@ -48,6 +48,7 @@ public partial class SecondPage : ContentPage
             await DisplayAlert("Ошибка", "Не удалось отправить код подтверждения", "OK");
             return;
         }
+    
 
 
         //Временное храниение
@@ -68,10 +69,12 @@ public partial class SecondPage : ContentPage
 	{
         try
         {
+            Env.Load();
             
             string code = GenerationVerificationCode();
             //Чтение пароля и эмейла из env
             string fromEmail = "iv8747583@gmail.com";
+
             string fromPassword = "qfsu eicq esyp fgwk";
 
             //ОТладка на .env

@@ -34,7 +34,7 @@ public partial class VerificationPage : ContentPage
                 await DisplayAlert("Ошибка!", "Данный пользователь не найден!", "OK");
                 return;
             }
-            
+          
 
             //Создание пользователя в БД и хэшируем пароль
             string salt = PasswordHelper.GenaretionSalt();
