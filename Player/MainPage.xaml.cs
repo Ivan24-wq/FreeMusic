@@ -58,6 +58,6 @@ public partial class MainPage : ContentPage
 	//Переход на страницу сброса пароля
 	private async void Reset(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new PasswordReset("Сброс пароля"));
+        await Navigation.PushAsync(new PasswordReset());
     }
 }
