@@ -9,11 +9,12 @@
                FontSize="16"
                HorizontalOptions="Center"
                HorizontalTextAlignment="Center"/>
+       
+       <Frame Padding="0" CornerRadius="8" HasShadow="False" BorderColor="Transparent" BackgroundColor="#333">
+              <Entry x:Name="Box1" MaxLength="1" Keyboard="Numeric"
+                     TextChanged="OnTextChanged" WidthRequest="45" HeightRequest="55"
+                     HorizontalTextAlignment="Center" FontSize="24" BackgroundColor="Transparent" TextColor="White"/>
 
-        <Entry x:Name="CodeEntry" Placeholder="Код" Keyboard="Numeric" MaxLength="6"/>
-
-        <Button Text="Подтвердить" Clicked="VerifyCodeClicked"/>
-
-        <Label x:Name="StatusLabel" TextColor="Red" HorizontalOptions="Center"/>
+       </Frame>
     </VerticalStackLayout>
 </ContentPage>

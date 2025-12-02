@@ -41,7 +41,7 @@ public partial class SecondPage : ContentPage
             return;
         }
 
-        //Отпрака кода подтверждени]
+        //Отпрака кода подтверждени
         bool sent = await SendVeryfincationCode(email);
         if (!sent)
         {
