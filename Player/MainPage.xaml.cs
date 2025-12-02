@@ -2,6 +2,7 @@
 using Player.Helper;
 using Player.Models;
 using Player.Services;
+using Player.ForgotPassword;
 namespace Player;
 
 public partial class MainPage : ContentPage
@@ -52,5 +53,11 @@ public partial class MainPage : ContentPage
 	private async void Register(object sender, EventArgs e)
 	{ 
 		await Navigation.PushAsync(new SecondPage("Регистрация"));
-	}	
+	}
+
+	//Переход на страницу сброса пароля
+	private async void Reset(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new PasswordReset("Сброс пароля"));
+    }
 }

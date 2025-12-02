@@ -95,7 +95,8 @@
             
             <Button Text="Не помню пароль"
                 Background="White"
-                TextColor="Black"/>
+                TextColor="Black"
+                Clicked="Reset"/>
         
         </VerticalStackLayout>
     </ScrollView>
