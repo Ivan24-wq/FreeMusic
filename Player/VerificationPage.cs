@@ -3,72 +3,117 @@ using Player.Services;
 using Player.Helper;
 
 namespace Player;
+
 public partial class VerificationPage : ContentPage
 {
     private readonly MongoService _mongoService;
+
     public VerificationPage()
     {
         InitializeComponent();
         _mongoService = new MongoService();
     }
 
-    private async void VerifyCodeClicked(object sender, EventArgs e)
+    // Заполнение по одному символу
+    private void OnTextChanged(object sender, TextChangedEventArgs e)
     {
-        string enteredCode = CodeEntry.Text?.Trim();
-        string savedCode = Preferences.Get("VerificationCode", "");
-        if (string.IsNullOrEmpty(enteredCode))
+        var boxes = new[] { Box1, Box2, Box3, Box4, Box5, Box6 };
+        var entry = sender as Entry;
+
+        int index = Array.IndexOf(boxes, entry);
+
+        // Переход вперёд
+        if (!string.IsNullOrEmpty(entry.Text))
         {
-            StatusLabel.Text = "Введите код подтверждения!";
+            if (index < boxes.Length - 1)
+                boxes[index + 1].Focus();
+        }
+        else // Переход назад при удалении
+        {
+            if (index > 0)
+                boxes[index - 1].Focus();
+
             return;
         }
 
-        if(enteredCode == savedCode)
+        // Когда заполнены все 6 чисел — проверяем
+        if (boxes.All(b => !string.IsNullOrEmpty(b.Text)))
         {
-            //Временные данные пользователя
-            string email = Preferences.Get("PendingUserEmail", " ");
-            string password = Preferences.Get("PendingUserPassword", "");
+            Verify();
+        }
+    }
 
-            //Проверка на не зарегистрированного пользователя
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-            {
-                await DisplayAlert("Ошибка!", "Данный пользователь не найден!", "OK");
-                return;
-            }
-          
+    // Проверка введённого кода и автоматическая регистрация
+    private async void Verify()
+    {
+        string enteredCode =
+            $"{Box1.Text}{Box2.Text}{Box3.Text}{Box4.Text}{Box5.Text}{Box6.Text}";
 
-            //Создание пользователя в БД и хэшируем пароль
-            string salt = PasswordHelper.GenaretionSalt();
-            string hash = PasswordHelper.PasswordHashed(password, salt);
+        string savedCode = Preferences.Get("VerificationCode", "");
 
-            //новый юзер
-            var newUser = new User(
-                login: email,
-                password: hash,
-                email: email,
-                code: null,
-                salt: salt);
+        if (enteredCode == savedCode)
+        {
+            SetBoxesColor(Colors.Green);
+            StatusLabel.Text = "Код верный!";
 
-            try
-            {
-                await _mongoService.AddUserAsync(newUser);
-                
-                //Очистка временных данных
-                Preferences.Remove("VerificationCode");
-                Preferences.Remove("PendingUserEmail");
-                Preferences.Remove("PendingUserPassword");
-
-
-            await DisplayAlert("Успех!", "Вы успешно зарегистрировались!", "OK");
-            await Navigation.PopToRootAsync();
-            }
-            catch(Exception ex)
-            {
-                await DisplayAlert("Ошибка!", $"Не удалось сохранить пользователя: {ex.Message}", "OK");
-            }
+            // Автоматическая регистрация
+            await CompleteRegistrationAsync();
         }
         else
         {
-            StatusLabel.Text = "Неверный код!";
+            SetBoxesColor(Colors.Red);
+            StatusLabel.Text = "Вы ввели некорректный код!";
+        }
+    }
+
+    // Метод для смены цвета всех боксов
+    private void SetBoxesColor(Color color)
+    {
+        Box1.TextColor = color;
+        Box2.TextColor = color;
+        Box3.TextColor = color;
+        Box4.TextColor = color;
+        Box5.TextColor = color;
+        Box6.TextColor = color;
+    }
+
+    // Метод автоматической регистрации пользователя
+    private async Task CompleteRegistrationAsync()
+    {
+        string email = Preferences.Get("PendingUserEmail", "");
+        string password = Preferences.Get("PendingUserPassword", "");
+
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        {
+            await DisplayAlert("Ошибка!", "Данный пользователь не найден!", "OK");
+            return;
+        }
+
+        string salt = PasswordHelper.GenaretionSalt();
+        string hash = PasswordHelper.PasswordHashed(password, salt);
+
+        var newUser = new User(
+            login: email,
+            password: hash,
+            email: email,
+            code: null,
+            salt: salt
+        );
+
+        try
+        {
+            await _mongoService.AddUserAsync(newUser);
+
+            Preferences.Remove("VerificationCode");
+            Preferences.Remove("PendingUserEmail");
+            Preferences.Remove("PendingUserPassword");
+
+            await DisplayAlert("Успех!", "Вы успешно зарегистрировались!", "OK");
+            await Navigation.PopToRootAsync();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ошибка!", $"Не удалось сохранить пользователя: {ex.Message}", "OK");
         }
     }
 }

@@ -1,20 +1,56 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Player.VerificationPage"
-             Title="Подтверждение регистрации">
+             x:Class="Player.VerificationPage">
              
- <VerticalStackLayout Padding="20" Spacing="20">
+    <VerticalStackLayout Padding="20" Spacing="20">
         <Label Text="Введите код подтверждения (6 цифр)"
                FontSize="16"
                HorizontalOptions="Center"
                HorizontalTextAlignment="Center"/>
-       
-       <Frame Padding="0" CornerRadius="8" HasShadow="False" BorderColor="Transparent" BackgroundColor="#333">
-              <Entry x:Name="Box1" MaxLength="1" Keyboard="Numeric"
-                     TextChanged="OnTextChanged" WidthRequest="45" HeightRequest="55"
-                     HorizontalTextAlignment="Center" FontSize="24" BackgroundColor="Transparent" TextColor="White"/>
 
-       </Frame>
+              <!-- Поля для ввода кода верификации -->
+        <Frame Padding="0" CornerRadius="8" HasShadow="False" BorderColor="White" BackgroundColor="#333" Margin="20">
+              <HorizontalStackLayout Spacing="0" HorizontalOptions="Center">
+                     <Entry x:Name="Box1" MaxLength="1" 
+                            Keyboard="Numeric" TextChanged="OnTextChanged"
+                            WidthRequest="45" HeightRequest="55" 
+                            HorizontalTextAlignment="Center" FontSize="24" 
+                            BackgroundColor="White" TextColor="Black"/>
+                     
+                     <Entry x:Name="Box2" MaxLength="1" 
+                            Keyboard="Numeric" TextChanged="OnTextChanged"
+                            WidthRequest="45" HeightRequest="55" 
+                            HorizontalTextAlignment="Center" FontSize="24" 
+                            BackgroundColor="White" TextColor="Black"/>
+                     
+                     <Entry x:Name="Box3" MaxLength="1" 
+                            Keyboard="Numeric" TextChanged="OnTextChanged"
+                            WidthRequest="45" HeightRequest="55" 
+                            HorizontalTextAlignment="Center" FontSize="24" 
+                            BackgroundColor="White" TextColor="Black"/>
+
+                     <Entry x:Name="Box4" MaxLength="1" 
+                            Keyboard="Numeric" TextChanged="OnTextChanged"
+                            WidthRequest="45" HeightRequest="55" 
+                            HorizontalTextAlignment="Center" FontSize="24" 
+                            BackgroundColor="white" TextColor="Black"/>
+
+                     <Entry x:Name="Box5" MaxLength="1" 
+                            Keyboard="Numeric" TextChanged="OnTextChanged"
+                            WidthRequest="45" HeightRequest="55" 
+                            HorizontalTextAlignment="Center" FontSize="24" 
+                            BackgroundColor="White" TextColor="Black"/>
+                     
+                     <Entry x:Name="Box6" MaxLength="1" 
+                            Keyboard="Numeric" TextChanged="OnTextChanged"
+                            WidthRequest="45" HeightRequest="55" 
+                            HorizontalTextAlignment="Center" FontSize="24" 
+                            BackgroundColor="White" TextColor="Black"/>
+
+                     <Label x:Name="StatusLabel"  HorizontalOptions="Center"/>
+
+              </HorizontalStackLayout>
+        </Frame>
     </VerticalStackLayout>
 </ContentPage>
