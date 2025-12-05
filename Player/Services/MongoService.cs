@@ -22,10 +22,18 @@ namespace Player.Services
         }
 
         //Поиск пользователя в бд по логину
-        public async Task<User?> GetUserByLoginAsync(string login)
+        public async Task<User> GetUserByLoginAsync(string login)
         {
             return await _userCollection
             .Find(u => u.Login == login)
+            .FirstOrDefaultAsync();
+        }
+
+        //Поиск пользователя по логину(Для сброса пароля)
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _userCollection
+            .Find(u => u.Email == email)
             .FirstOrDefaultAsync();
         }
     }
