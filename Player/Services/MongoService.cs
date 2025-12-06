@@ -36,5 +36,17 @@ namespace Player.Services
             .Find(u => u.Email == email)
             .FirstOrDefaultAsync();
         }
+
+        //Замена пароля
+        public async Task<bool> UpdatePasswordAsync(string email, string newPasssword, string newSalt)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Email, email);
+            var update = Builders<User>.Update
+            .Set(u => u.Password, newPasssword)
+            .Set(u => u.Salt, newSalt);
+
+            var result = await _userCollection.UpdateOneAsync(filter, update);
+            return result.ModifiedCount > 0;
+        }
     }
 }

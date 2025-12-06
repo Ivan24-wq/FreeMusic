@@ -1,6 +1,7 @@
 using Intents;
 using Player.Models;
 using Player.Services;
+using Player.ResetPassword;
 namespace Player.ForgotPassword
 {
     public partial class PasswordReset : ContentPage
@@ -29,6 +30,7 @@ namespace Player.ForgotPassword
             if(user == null)
             {
                 await DisplayAlert("Ошибка!", "Данного пользователя не существует!", "ОК");
+                return;
             }
 
             //Отравка кода подтверждения
@@ -41,6 +43,10 @@ namespace Player.ForgotPassword
             return;
         }
         await DisplayAlert("Письмо с кодом подтверждения отправден на почту", "Введите код", "OK");
+
+        //Созраниени email(регистрация или востановление)
+        Preferences.Set("PendingUserEmail", email);
+        Preferences.Set("IsRegestration", false);
         await Navigation.PushAsync(new VerificationPage());
         }
     }

@@ -56,8 +56,18 @@ public partial class VerificationPage : ContentPage
             SetBoxesColor(Colors.Green);
             StatusLabel.Text = "Код верный!";
 
-            // Автоматическая регистрация
-            await CompleteRegistrationAsync();
+            //Проверка решистрация или востановление
+            bool IsRegistration = Preferences.Get("IsRegestration", true);
+            if (IsRegistration)
+            {
+                // Автоматическая регистрация
+                await CompleteRegistrationAsync();
+            }
+            else
+            {
+                await Navigation.PushAsync(new Player.ResetPassword.ResetPassword());
+            }
+            
         }
         else
         {
@@ -83,7 +93,7 @@ public partial class VerificationPage : ContentPage
         string email = Preferences.Get("PendingUserEmail", "");
         string password = Preferences.Get("PendingUserPassword", "");
 
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        if (string.IsNullOrEmpty(email))
         {
             await DisplayAlert("Ошибка!", "Данный пользователь не найден!", "OK");
             return;
