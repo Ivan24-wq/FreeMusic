@@ -3,6 +3,7 @@ using Player.Helper;
 using Player.Models;
 using Player.Services;
 using Player.ForgotPassword;
+using Player.MainScreen;
 namespace Player;
 
 public partial class MainPage : ContentPage
@@ -43,7 +44,8 @@ public partial class MainPage : ContentPage
 			return;
 		}
 
-		await DisplayAlert("Успех", $"Добро пожаловать, {user.Login}!", "OK");
+        await Navigation.PushAsync(new Player.MainScreen.MainScreen());
+		
 
 		//Кэшируем логин
 		Preferences.Set("loggedUser", user.Email);
