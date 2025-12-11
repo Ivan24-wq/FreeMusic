@@ -54,6 +54,7 @@ public partial class SecondPage : ContentPage
         //Временное храниение
         Preferences.Set("PendingUserEmail", email);
         Preferences.Set("PendingUserPassword", password);
+        Preferences.Set("IsRegestration", true);
         await DisplayAlert("Письмо с кодом подтверждения отправден на почту", "Введите код", "OK");
         await Navigation.PushAsync(new VerificationPage());
 

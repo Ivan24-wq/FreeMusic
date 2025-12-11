@@ -1,6 +1,7 @@
 using Player.Models;
 using Player.Services;
 using Player.Helper;
+using Player.MainScreen;
 
 namespace Player;
 
@@ -118,8 +119,7 @@ public partial class VerificationPage : ContentPage
             Preferences.Remove("PendingUserEmail");
             Preferences.Remove("PendingUserPassword");
 
-            await DisplayAlert("Успех!", "Вы успешно зарегистрировались!", "OK");
-            await Navigation.PopToRootAsync();
+            await Navigation.PushAsync(new Player.MainScreen.MainScreen());
         }
         catch (Exception ex)
         {
